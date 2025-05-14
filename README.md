@@ -38,6 +38,3 @@ The solution follows clean architecture principles with these layers:
 ```bash
 cd src/TodoApp.Api
 dotnet run
-
-## Acknowledgements
-This project was developed as a learning exercise with assistance from various learning resources including documentation, tutorials, and AI coding assistance tools.
