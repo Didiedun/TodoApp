@@ -1,4 +1,3 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TodoApp.Core.Interfaces;
@@ -11,10 +10,12 @@ namespace TodoApp.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+            // Register database services
+            services.AddSingleton<DatabaseConnectionFactory>();
+            services.AddSingleton<DatabaseInitializer>();
             
-            services.AddScoped<ITodoRepository, TodoRepository>();
+            // Register repository
+            services.AddScoped<ITodoRepository, DapperTodoRepository>();
             
             return services;
         }

@@ -1,6 +1,5 @@
 // src/TodoApp.Api/Program.cs
 using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using TodoApp.Api.Middleware;
 using TodoApp.Application;
@@ -37,7 +36,7 @@ builder.Services.AddSwaggerGen(c =>
     { 
         Title = "TodoApp API", 
         Version = "v1",
-        Description = "A simple API for managing todo items"
+        Description = "A simple API for managing todo items, implemented with Clean Architecture and Dapper"
     });
 });
 
@@ -49,12 +48,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApp API v1"));
     
-    // Create and migrate the database
+    // Initialize the database using Dapper
     using (var scope = app.Services.CreateScope())
     {
         var services = scope.ServiceProvider;
-        var context = services.GetRequiredService<ApplicationDbContext>();
-        context.Database.EnsureCreated();
+        var dbInitializer = services.GetRequiredService<DatabaseInitializer>();
+        dbInitializer.Initialize();
     }
 }
 
